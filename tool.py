@@ -32,7 +32,7 @@ class FileCoupling:
 
 def read_coupling_csv(path):
     """ Reads the csv file at the specified path and parses the lines to
-        FileCoupling objects. Returns a list of parsed objects """
+        FileCoupling objects. Returns a list of parsed objects. """
     with open(path) as csv:
         next(csv) # skip first line
         file_couplings = []
@@ -43,7 +43,8 @@ def read_coupling_csv(path):
     return file_couplings
 
 def get_nodes_and_edges(file_couplings):
-    """ Generate a graph from a list of FileCouling objects """
+    """ Takes a list of FileCoupling objects and return a dictionary of nodes (id, node-object)
+        and a list of edge-objects."""
     node_name_dict = {}
     node_id_dict = {}
     edge_list = []
@@ -56,18 +57,30 @@ def get_nodes_and_edges(file_couplings):
         edge_list.append(Edge(from_node.id, to_node.id, entry.degree + "%"))        
     return node_id_dict, edge_list
 
-def get_or_create_node(node_dict, name):
+def get_or_create_node(nodes, name):
     """ Checks whether a node with the specified name exists in the
-        dictionary. If not, a new node is created. Always returns a node. """
-    node = node_dict.get(name)
+        dictionary. If not, a new node is created. 
+        > Always returns a node."""
+    node = nodes.get(name)
     if not node:
         node = Node(name)
-        node_dict[name] = node
+        nodes[name] = node
     return node
 
+def filter_nodes_and_edges(nodes, edges, filesOfInterest = None, minDegree = None):
+    """ Filters the node dictionairy and the list of edges.
+        > fileOfInterest: Array of filenames that shall be included in the graph.
+        
+        > minDegree: Number of the minimum degree of dependency between two file."""
+    # Edge (A -> B, degree)
+    # TODO fileOfInterest filter: Node A's filename must appear in filesOfInterest. If not, remove from node and edges
+    # TODO minDegree: Remove all edges with a degree less than minDegree    
+    return nodes, edges
+
+
 def generate_graph(nodes, edges):
-    """ Take a dictionary of nodes (id, node-object) and a list of edge-objects. 
-        Returns a Digraph."""
+    """ Takes a dictionary of nodes and a list of edges. 
+        > Returns a Digraph."""
     dot = Digraph(comment="My comment")
     for node_id, node in nodes.items():
         dot.node(node_id, node.name)
@@ -79,12 +92,14 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         print ("Error: Please specify the path to the csv")
         exit(1)
-
     csv_path = sys.argv[1] 
     
     couplings = read_coupling_csv(csv_path)
-    nodes, edges = get_nodes_and_edges(couplings)    
-    graph = generate_graph(nodes, edges) # TODO Apply filtering options
+    
+    nodes, edges = get_nodes_and_edges(couplings) 
+    nodes, edges = filter_nodes_and_edges(nodes, edges)
+    
+    graph = generate_graph(nodes, edges)
     try:
         graph.render('rendered/graph.gv', view=True)
     except ExecutableNotFound as ex:
