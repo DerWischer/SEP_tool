@@ -3,8 +3,8 @@ The tools makes use of the tool [code-mat](https://github.com/adamtornhill/code-
 1. Install [graphviz](https://www.graphviz.org/) and add it to your PATH.
 
 2. Install the python3 package [graphviz](https://pypi.python.org/pypi/graphviz).
-
-    pip3 install graphviz
+        
+        pip3 install graphviz
 # Usage
 Follow the three steps described below.
 ## Step 1
