@@ -1,4 +1,12 @@
-The tools makes use of the tool [code-mat](https://github.com/adamtornhill/code-maat) developed by Adam Tornhill. Follow the three steps described below.
+The tools makes use of the tool [code-mat](https://github.com/adamtornhill/code-maat) developed by Adam Tornhill. A standalone jar is included in the repository in the folder "code-maat".
+# Installation
+1. Install [graphviz](https://www.graphviz.org/) and add it to your PATH.
+
+2. Install the python3 package [graphviz](https://pypi.python.org/pypi/graphviz).
+
+    pip3 install graphviz
+# Usage
+Follow the three steps described below.
 ## Step 1
 Generate the git log for the repository you want to analyse. Go into the git repository you want to analyse and run the following command:
     
