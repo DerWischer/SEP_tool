@@ -1,4 +1,4 @@
-The tools makes use of the tool [code-mat](https://github.com/adamtornhill/code-maat) developed by Adam Tornhill. A standalone jar is included in the repository in the folder "code-maat".
+The tool makes use of [code-mat](https://github.com/adamtornhill/code-maat) developed by Adam Tornhill. A standalone jar is included in the repository in the folder "code-maat".
 # Installation
 1. Install [graphviz](https://www.graphviz.org/) and add it to your PATH.
 
