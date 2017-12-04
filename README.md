@@ -10,12 +10,10 @@ Follow the three steps described below.
 ## Step 1
 Generate the git log for the repository you want to analyse. Go into the git repository you want to analyse and run the following command:
     
-    git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > <file_step_1>
+    git log --all --numstat --date=short --pretty=format:--%h--%ad--%aN --no-renames > <file_step_1>
 
 	
-	If on Windows
-	git log --all --numstat --date=short --pretty=format:"--%h--%ad--%aN" --no-renames > file_step_1
-	
+
 ## Step 2
 Next, use code-maat to anaylse the log you generated in step one. In the repository you'll find a runnable jar file of code-maat. Go into the tool's repository and enter the folder "code-maat". Execute the following command:
     
