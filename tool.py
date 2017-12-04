@@ -42,19 +42,23 @@ def read_coupling_csv(path):
             file_couplings.append(fc)
     return file_couplings
 
-def get_nodes_and_edges(file_couplings):
+def get_nodes_and_edges(file_couplings, minDegree):
     """ Takes a list of FileCoupling objects and return a dictionary of nodes (id, node-object)
-        and a list of edge-objects."""
+        and a list of edge-objects.
+        > Excludes any nodes below minDegree"""
     node_name_dict = {}
     node_id_dict = {}
     edge_list = []
     for entry in file_couplings:
+
         from_node = get_or_create_node(node_name_dict, entry.entitiy)
         to_node = get_or_create_node(node_name_dict, entry.coupled)
 
-        node_id_dict[from_node.id] = from_node
-        node_id_dict[to_node.id] = to_node
-        edge_list.append(Edge(from_node.id, to_node.id, entry.degree + "%"))        
+        if (entry.degree >= str(minDegree)):
+
+            node_id_dict[from_node.id] = from_node
+            node_id_dict[to_node.id] = to_node
+            edge_list.append(Edge(from_node.id, to_node.id, entry.degree + "%"))        
     return node_id_dict, edge_list
 
 def get_or_create_node(nodes, name):
@@ -96,8 +100,8 @@ if __name__ == "__main__":
     
     couplings = read_coupling_csv(csv_path)
     
-    nodes, edges = get_nodes_and_edges(couplings) 
-    nodes, edges = filter_nodes_and_edges(nodes, edges)
+    nodes, edges = get_nodes_and_edges(couplings, 50) 
+    #nodes, edges = filter_nodes_and_edges(nodes, edges)
     
     graph = generate_graph(nodes, edges)
     try:
