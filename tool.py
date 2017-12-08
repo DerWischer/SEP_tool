@@ -97,10 +97,14 @@ if __name__ == "__main__":
         print ("Error: Please specify the path to the csv")
         exit(1)
     csv_path = sys.argv[1] 
+
+    min_degree = 50
+    if len(sys.argv) == 3:
+        min_degree = sys.argv[2]
     
     couplings = read_coupling_csv(csv_path)
     
-    nodes, edges = get_nodes_and_edges(couplings, 50) 
+    nodes, edges = get_nodes_and_edges(couplings, min_degree) 
     #nodes, edges = filter_nodes_and_edges(nodes, edges)
     
     graph = generate_graph(nodes, edges)
