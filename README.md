@@ -5,23 +5,11 @@ The tool makes use of [code-mat](https://github.com/adamtornhill/code-maat) deve
 2. Install the python3 package [graphviz](https://pypi.python.org/pypi/graphviz).
         
         pip3 install graphviz
+
+If step 1 and step 2 are not executed correctly, you won't be able to generate the graph. Make sure to set up everything as described.
 # Usage
-Follow the three steps described below.
-## Step 1
-Generate the git log for the repository you want to analyse. Go into the git repository you want to analyse and run the following command:
-    
-    git log --all --numstat --date=short --pretty=format:--%h--%ad--%aN --no-renames > <file_step_1>
+Run the tool with the following command
 
-	
+    python3 tool.py <path to repository> <min_degree>
 
-## Step 2
-Next, use code-maat to anaylse the log you generated in step one. In the repository you'll find a runnable jar file of code-maat. Go into the tool's repository and enter the folder "code-maat". Execute the following command:
-    
-    java -jar code-maat.jar -l <file_step_1> -c git2 -a coupling > <file_step_2>
-    
-## Step 3
-Go into the tool's repositoy and run the tool with the following command:
-    
-    python3 tool.py <file_step_2>
-
-The rendered diagram is found in the folder "rendered". If you set up a default pdf viewer, it should open automatically.
+The path to the repository is mandatory. The minimum degree of coupling between files is optional.
