@@ -99,7 +99,7 @@ def cleanup_directory():
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        print ("*** Usage ***\n\tArg 1 > Path to the git repository.\n\tArg 2> Minimum degree of coupling. Integer 0-100. (optional)")
+        print ("Usage error\n\tArg 1 > Path to the git repository.\n\tArg 2> Minimum degree of coupling. Integer 0-100. (optional)")
         exit(1)
     if not os.path.exists("analysis"):
         os.mkdir("analysis")
