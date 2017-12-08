@@ -1,7 +1,8 @@
 import os
 import sys
 from graphviz import Digraph, ExecutableNotFound
-
+import subprocess
+import shutil
 ID_COUNTER = 0
 
 def generate_id():
@@ -92,17 +93,34 @@ def generate_graph(nodes, edges):
         dot.edge(edge.from_id, edge.to_id, edge.label)
     return dot
 
+def cleanup_directory():
+    if os.path.exists("analysis"):
+        shutil.rmtree('analysis')
+
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        print ("Error: Please specify the path to the csv")
+        print ("*** Usage ***\n\tArg 1 > Path to the git repository.\n\tArg 2> Minimum degree of coupling. Integer 0-100. (optional)")
         exit(1)
-    csv_path = sys.argv[1] 
+    if not os.path.exists("analysis"):
+        os.mkdir("analysis")
 
-    min_degree = 50
+    path_repo = os.path.join(sys.argv[1], ".git")
+    path_gitlog = os.path.join("analysis", "gitlog.log")
+    path_coupling = os.path.join("analysis", "coupling.csv")
+    path_codemaat = os.path.join("code-maat", "code-maat.jar")
+
+    # Generate git log and save to file
+    with open(path_gitlog, 'w') as f_gitlog:
+        subprocess.call(["git", "--git-dir", path_repo, "log", "--all", "--numstat", "--date=short", "--pretty=format:--%h--%ad--%aN", "--no-renames"], stdout=f_gitlog)
+    # Perform coupling analysis with code maat and save to file
+    with open(path_coupling, 'w') as f_coupling:
+        subprocess.call(["java", "-jar",  path_codemaat, "-l", path_gitlog, "-c", "git2", "-a", "coupling"], stdout=f_coupling)
+    
+    min_degree = 30
     if len(sys.argv) == 3:
         min_degree = sys.argv[2]
     
-    couplings = read_coupling_csv(csv_path)
+    couplings = read_coupling_csv(path_coupling)
     
     nodes, edges = get_nodes_and_edges(couplings, min_degree) 
     #nodes, edges = filter_nodes_and_edges(nodes, edges)
@@ -115,3 +133,5 @@ if __name__ == "__main__":
     except Exception as ex:
         print("Error: Not handled")
         print (ex)
+    finally:
+        cleanup_directory()
