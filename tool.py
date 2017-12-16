@@ -1,6 +1,6 @@
 import os
 import sys
-from graphviz import Digraph, ExecutableNotFound
+from graphviz import Graph, ExecutableNotFound
 import subprocess
 import shutil
 ID_COUNTER = 0
@@ -86,7 +86,7 @@ def filter_nodes_and_edges(nodes, edges, filesOfInterest = None, minDegree = Non
 def generate_graph(nodes, edges):
     """ Takes a dictionary of nodes and a list of edges. 
         > Returns a Digraph."""
-    dot = Digraph(comment="My comment")
+    dot = Graph(comment="My comment")
     for node_id, node in nodes.items():
         dot.node(node_id, node.name)
     for edge in edges:
